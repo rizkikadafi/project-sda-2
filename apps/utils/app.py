@@ -1,5 +1,5 @@
 from typing import Callable, List
-from rich.console import Console
+from rich.console import Console, Group
 from rich.panel import Panel
 from rich.table import Table
 from rich.layout import Layout

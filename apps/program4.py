@@ -2,6 +2,143 @@ from utils.app import *
 
 from data_structure.linked_list import SLinkedList
 
+def panel_success(value: tuple, operation: str) -> Panel:
+    """Panel untuk menampilkan info ketika operasi tertentu berhasil dilakukan."""
+    
+    addition_success = Group(
+        Text("\nData mahasiswa dengan:\n", justify="center", style="bold"),
+        Align.center(Text(f"Nama    : {value[0]}\nNIM     : {value[1]}", style="bold")),
+        Text("\nBerhasil ditambahkan!\n", justify="center", style="bold")
+    )
+
+    deletion_success = Group(
+        Text("\nData mahasiswa dengan:\n", justify="center", style="bold"),
+        Align.center(Text(f"Nama    : {value[0]}\nNIM     : {value[1]}", style="bold")),
+        Text("\nBerhasil dihapus!\n", justify="center", style="bold")
+    )
+
+    panel = Panel("None")
+    match operation:
+        case "addition":
+            panel = Panel(addition_success, title="[bold]INFO")
+        case "deletion":
+            panel = Panel(deletion_success, title="[bold]INFO")
+
+    return panel
+
+def panel_empty_data(operation: str) -> Panel:
+    """Panel untuk menampilkan info ketika data kosong."""
+
+    panel = Panel("None")
+    match operation:
+        case "deletion":
+            panel = Panel(Text("\nLinked List Kosong! Tidak ada data yang bisa dihapus!\n", justify="center", style="bold"), title="[bold]INFO")
+        case "display_data":
+            panel = Panel(Text("\nLinked List Kosong! Tidak ada data yang bisa ditampilkan!\n", justify="center", style="bold"), title="[bold]INFO")
+
+    return panel
+
+def panel_not_found_data(data, case: str) -> Panel:
+    """Panel untuk menampilkan infor ketika data yang dicari tidak ditemukan."""
+
+    panel = Panel("None")
+    match case:
+        case "nama":
+            panel = Panel(Padding(Text(f"Mahasiswa dengan nama [{data}] tidak ditemukan!", justify="center", style="bold"), pad=(1, 0, 1, 0)), title="[bold #9ee5ff]INFO") 
+        case "nim":
+            panel = Panel(Padding(Text(f"Mahasiswa dengan NIM [{data}] tidak ditemukan!", justify="center", style="bold"), pad=(1, 0, 1, 0)), title="[bold #9ee5ff]INFO") 
+
+    return panel
+
+def table_data(data: SLinkedList) -> Table:
+    """Tabel untuk menampilkan data."""
+
+    table = Table(title="[bold]Data Mahasiswa")
+    table.add_column("No.", style="bold", justify="center")
+    table.add_column("NIM", style="bold", min_width=20)
+    table.add_column("Nama", style="bold", min_width=20)
+
+    data_mhs = data.traverse()
+    for i in range(data.size):
+        mhs = next(data_mhs)
+        table.add_row(f"{i+1}", f"{mhs[1]}", f"{mhs[0]}")
+
+    return table
+
+def search_data(data, linked_list: SLinkedList, based_on: str):
+    """Fungsi untuk menampilkan data yang dicari."""
+
+    result_table = Table(title="[bold]Hasil Pencarian")
+    result_table.add_column("No.", style="bold", justify="center")
+    result_table.add_column("NIM", style="bold", min_width=20)
+    result_table.add_column("Nama", style="bold", min_width=20)
+
+    match based_on:
+        case "nama":
+            count = 1
+            for data_mhs in linked_list.traverse():
+                if data_mhs[0] == data:
+                    result_table.add_row(f"{count}", f"{data_mhs[1]}", f"{data_mhs[0]}")
+                    console.print(result_table, justify="center")
+                    return
+                count += 1
+
+            console.print(Padding(panel_not_found_data(data, case="nama"), pad=(1, 0, 0, 0)))
+
+        case "nim":
+            count = 1
+            for data_mhs in linked_list.traverse():
+                if data_mhs[1] == data:
+                    result_table.add_row(f"{count}", f"{data_mhs[1]}", f"{data_mhs[0]}")
+                    console.print(result_table, justify="center")
+                    return
+                count += 1
+
+            console.print(Padding(panel_not_found_data(data, case="nim"), pad=(1, 0, 0, 0)))
+
+def delete_data(data, linked_list: SLinkedList, based_on: str):
+    """Fungsi untuk menghapus data tertentu."""
+
+    result_table = Table(title="[bold]Penghapusan Data")
+    result_table.add_column("No.", style="bold", justify="center")
+    result_table.add_column("NIM", style="bold", min_width=20)
+    result_table.add_column("Nama", style="bold", min_width=20)
+
+    match based_on:
+        case "nama":
+            count = 1
+            for data_mhs in linked_list.traverse():
+                if data_mhs[0] == data:
+                    result_table.add_row(f"{count}", f"{data_mhs[1]}", f"{data_mhs[0]}")
+                    console.print(result_table, justify="center")
+
+                    if Confirm.ask("[bold]\nApakah anda yakin ingin menghapus data tersebut"):
+                        linked_list.remove(data_mhs)
+                        console.print(panel_success(data_mhs, operation="deletion"))
+                        return
+                    else:
+                        return
+                count += 1
+            else:
+                console.print(panel_not_found_data(data, case="nama"))
+
+        case "nim":
+            count = 1
+            for data_mhs in linked_list.traverse():
+                if data_mhs[1] == data:
+                    result_table.add_row(f"{count}", f"{data_mhs[1]}", f"{data_mhs[0]}")
+                    console.print(result_table, justify="center")
+
+                    if Confirm.ask("[bold]\nApakah anda yakin ingin menghapus data tersebut"):
+                        linked_list.remove(data_mhs)
+                        console.print(panel_success(data_mhs, operation="deletion"))
+                        return
+                    else:
+                        return
+                count += 1
+            else:
+                console.print(panel_not_found_data(data, case="nim"))
+
 def main():
     menu = {
         1: "Tambah Data",
@@ -10,41 +147,68 @@ def main():
         4: "Hapus Data",
         5: "Keluar Program"
     }
+    
+    menu_str = "\n[bold]"
+    for i, k in menu.items():
+        menu_str += f"{i}. {k}\n"
+
+    searching_options = {
+        1: "Cari berdasarkan Nama",
+        2: "Cari berdasarkan NIM"
+    }
+
+    searching_options_str = "\n[bold]"
+    for i, k in searching_options.items():
+        searching_options_str += f"{i}. {k}\n"
+
+    deletion_options = {
+        1: "Hapus berdasarkan Nama",
+        2: "Hapus berdasarkan NIM"
+    }
+
+    deletion_options_str = "\n[bold]"
+    for i, k in deletion_options.items():
+        deletion_options_str += f"{i}. {k}\n"
+
+    panel_menu = Panel(menu_str, title="[bold #9ee5ff]Menu Program", title_align="left")
+    panel_description = Panel(program4.description, title="[bold #9ee5ff]Deskripsi Program", title_align="left")
+    panel_searching_options = Panel(searching_options_str, title="[bold #9ee5ff]Opsi Pencarian Data", title_align="left")
+    panel_deletion_options = Panel(deletion_options_str, title="[bold #9ee5ff]Opsi Penghapusan Data", title_align="left")
 
     linked_list = SLinkedList()
 
-    count = 0
     while True:
-        if count > 0:
-            program4.clear()
-            print(program4.title)
+        console.clear()
+        console.rule(program4.title, style="#9ee5ff")
+        console.print(Padding(panel_description, pad=(1, 0, 0, 0)))
+        
+        console.print(Padding(panel_menu, pad=(1, 0, 0, 0)))
 
-        print("Menu Program:")
-        for i, k in menu.items():
-            print(f"{i}. {k}")
-
-        opt = program4.prompt_options("\nPilih menu", [i for i in menu.keys()])
+        opt = IntPrompt.ask("\n[bold]Pilih Menu", choices=[str(i) for i in menu.keys()])
 
         import getpass
         match opt:
-            case 1:
-                print("\nPrompt Penambahan Data:")
+            case 1: # case 1: Tambah data
+                print()
+                console.rule("[bold #9ee5ff]Prompt Penambahan Data", style="#9ee5ff")
+
                 while True:
-                    nama = input("Masukkan Nama Mahasiswa: ")
+                    nama = Prompt.ask("[bold]\nMasukkan Nama Mahasiswa")
                     if not nama.replace(" ", "").isalpha():
-                        print("Nama yang anda masukkan tidak valid!")
+                        console.print("[prompt.invalid]Nama hanya boleh berisi karakter alphabet!")
                         continue
                     break
+
                 while True:
-                    nim = input("Masukkan NIM Mahasiswa: ")
+                    nim = Prompt.ask("[bold]\nMasukkan NIM Mahasiswa")
                     if not nim.isdecimal():
-                        print("NIM yang anda masukkan tidak valid!")
+                        console.print("[prompt.invalid]NIM hanya boleh berisi angka!")
                         continue
 
                     available = True
-                    for data in linked_list.display():
+                    for data in linked_list.traverse():
                         if data[1] == nim:
-                            print(f"NIM yang dimasukkan sudah digunakan")
+                            console.print("[prompt.invalid]NIM yang dimasukkan sudah digunakan")
                             available = False
                             break
 
@@ -53,117 +217,66 @@ def main():
 
                 linked_list.append((nama, nim))
 
-                print("\nData berhasil ditambahkan")
+                console.print(Padding(panel_success((nama, nim), operation="addition"), pad=(1, 0, 0, 0)))
+
                 getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
-            case 2:
+
+            case 2: # case 2: Tampilkan data
                 if linked_list.empty():
-                    print("\nData Kosong! Tidak ada data yang bisa ditampilkan!")
+                    console.print(Padding(panel_empty_data(operation="display_data"), pad=(1, 0, 0, 0)))
                 else:
-                    print("\nBerikut adalah data dalam linked list: ")
-                    for data in linked_list.display():
-                        print(f"{data[1]}: {data[0]}")
+                    console.print(table_data(linked_list), justify="center")
 
                 getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
-            case 3:
-                options = {
-                    1: "Cari berdasarkan Nama",
-                    2: "Cari berdasarkan NIM"
-                }
 
-                program4.clear()
-                print(program4.title)
+            case 3: # case 3: Cari data
+                console.clear()
+                console.rule(program4.title)
+                
+                console.print(Padding(panel_searching_options, pad=(1, 0, 0, 0)))
 
-                print("Opsi Pencarian Data:")
-                for i, k in options.items():
-                    print(f"{i}. {k}")
-
-                opt = program4.prompt_options("\nPilih menu", [i for i in options.keys()])
+                opt = IntPrompt.ask("\n[bold]Pilih opsi pencarian data", choices=[str(i) for i in searching_options.keys()])
 
                 match opt:
-                    case 1:
-                        searching = input("\nMasukkan Nama mahasiswa: ")
-                        found = False
+                    case 1: # opsi pencarian data 1: berdasarkan nama
+                        searching = Prompt.ask("\n[bold]Masukkan Nama mahasiswa")
 
-                        for data in linked_list.display():
-                            if data[0] == searching:
-                                print(f"\nHasil pencarian:\n{data[1]}: {data[0]}")
-                                found = True
-                                break
-
-                        if not found:
-                            print(f"Mahasiswa dengan nama [{searching}] tidak ditemukan!")
+                        search_data(searching, linked_list, based_on="nama")
                         
                         getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
-                    case 2:
-                        searching = input("\nMasukkan NIM mahasiswa: ")
-                        found = False
 
-                        for data in linked_list.display():
-                            if data[1] == searching:
-                                print(f"\nHasil pencarian:\n{data[1]}: {data[0]}")
-                                found = True
-                                break
+                    case 2: # opsi pencarian data 1: berdasarkan nim
+                        searching = Prompt.ask("\n[bold]Masukkan NIM mahasiswa")
 
-                        if not found:
-                            print(f"Mahasiswa dengan NIM [{searching}] tidak ditemukan!")
-
+                        search_data(searching, linked_list, based_on="nim")
+                        
                         getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
+
             case 4:
-                options = {
-                    1: "Hapus berdasarkan Nama",
-                    2: "Hapus berdasarkan NIM"
-                }
+                console.clear()
+                console.rule(program4.title)
 
-                program4.clear()
-                print(program4.title)
+                console.print(Padding(panel_deletion_options, pad=(1, 0, 0, 0)))
 
-                print("Opsi Penghapusan Data:")
-                for i, k in options.items():
-                    print(f"{i}. {k}")
-
-                opt = program4.prompt_options("\nPilih menu", [i for i in options.keys()])
+                opt = IntPrompt.ask("\n[bold]Pilih opsi Penghapusan data", choices=[str(i) for i in deletion_options.keys()])
 
                 match opt:
-                    case 1:
-                        delete = input("\nMasukkan Nama mahasiswa: ")
+                    case 1: # opsi pencarian data 1: berdasarkan nama
+                        delete = Prompt.ask("\n[bold]Masukkan Nama mahasiswa")
 
-                        for data in linked_list.display():
-                            if data[0] == delete:
-                                print(f"\nData:\n{data[1]}: {data[0]}")
-                                confirm = program4.prompt_options("\nApakah anda yankin ingin menghapus data tersebut?", ["y", "n"])
-                                if confirm == "y":
-                                    linked_list.remove(data)
-                                    print("\nData berhasil dihapus")
-                                    getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
-                                    break
-                                else:
-                                    break
-                        else:
-                            print(f"Data Mahasiswa dengan nama [{delete}] tidak ditemukan!")
-                            getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
+                        delete_data(delete, linked_list, based_on="nama")
 
-                    case 2:
-                        delete = input("\nMasukkan NIM mahasiswa: ")
+                        getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
 
-                        for data in linked_list.display():
-                            if data[1] == delete:
-                                print(f"\nData:\n{data[1]}: {data[0]}")
-                                confirm = program4.prompt_options("\nApakah anda yankin ingin menghapus data tersebut?", ["y", "n"])
-                                if confirm == "y":
-                                    linked_list.remove(data)
-                                    print("\nData berhasil dihapus")
-                                    getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
-                                    break
-                                else:
-                                    break
-                        else:
-                            print(f"Data Mahasiswa dengan nama [{delete}] tidak ditemukan!")
-                            getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
+                    case 2: # opsi pencarian data 1: berdasarkan nim
+                        delete = Prompt.ask("\n[bold]Masukkan NIM mahasiswa")
+
+                        delete_data(delete, linked_list, based_on="nim")
+
+                        getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
 
             case 5:
                 return program4.stop()
-
-        count += 1
 
 title = "[bold #9ee5ff]Program 4: Implementasi Linked List4\n" # untuk di tampilkan sebagai judul
 name = "Implementasi Linked List" # untuk di tampilkan di list menu
