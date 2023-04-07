@@ -10,6 +10,7 @@ class SLinkedList():
     def __init__(self) -> None:
         self.head: Optional[Node] = None
         self.tail: Optional[Node] = None
+        self.size: int = 0
 
     def prepend(self, value):
         newNode = Node(value, next=self.head)
@@ -20,6 +21,8 @@ class SLinkedList():
         else:
             self.head = newNode
 
+        self.size += 1
+
     def append(self, value):
         newNode = Node(value, next=None)
 
@@ -29,6 +32,8 @@ class SLinkedList():
         else:
             self.tail.next = newNode
             self.tail = newNode
+
+        self.size += 1
 
     def add_after(self, value, after):
         currentNode = self.head
@@ -46,6 +51,8 @@ class SLinkedList():
 
         print(f"[{after}] tidak ada dalam linked list!")
 
+        self.size += 1
+
     def add_before(self, value, before):
         currentNode = self.head
         nextNode = None if currentNode is None else currentNode.next
@@ -59,7 +66,9 @@ class SLinkedList():
 
         print(f"[{before}] tidak ada dalam linked list!")
 
-    def traverse(self):
+        self.size += 1
+
+    def display(self):
         currentNode = self.head
         string_result = ""
 
@@ -72,7 +81,7 @@ class SLinkedList():
 
             print(string_result + "None")
 
-    def display(self):
+    def traverse(self):
         currentNode = self.head
 
         if currentNode == None:
@@ -107,7 +116,9 @@ class SLinkedList():
             return None
         else:
             self.head = firstNode.next
+            self.size -= 1
             return firstNode.data
+
 
     def pop(self):
         currentNode = self.head
@@ -118,12 +129,14 @@ class SLinkedList():
         elif currentNode.next is None:
             self.head = None
             self.tail = None
+            self.size -= 1
             return currentNode.data
         else:
             while currentNode is not None:
                 if nextNode is not None and nextNode.next is None:
                     currentNode.next = None
                     self.tail = currentNode
+                    self.size -= 1
                     return nextNode.data
 
                 currentNode = currentNode.next
@@ -139,15 +152,18 @@ class SLinkedList():
             if currentNode.data == value:
                 self.head = None
                 self.tail = None
+                self.size -= 1
             else:
                 print(f"[{value}] tidak ada dalam linked list!")
         else:
             while currentNode is not None:
                 if currentNode.data == value:
                     self.head = currentNode.next
+                    self.size -= 1
                     return
                 elif nextNode is not None and nextNode.data == value:
                     currentNode.next = nextNode.next
+                    self.size -= 1
                     return
 
                 currentNode = currentNode.next
