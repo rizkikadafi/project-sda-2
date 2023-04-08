@@ -6,23 +6,23 @@ def panel_success(value: tuple, operation: str) -> Panel:
     """Panel untuk menampilkan info ketika operasi tertentu berhasil dilakukan."""
     
     addition_success = Group(
-        Text("\nData mahasiswa dengan:\n", justify="center", style="bold"),
-        Align.center(Text(f"Nama    : {value[0]}\nNIM     : {value[1]}", style="bold")),
-        Text("\nBerhasil ditambahkan!\n", justify="center", style="bold")
+        Text("\nData mahasiswa dengan:\n", justify="center", style="text_success"),
+        Align.center(Text(f"Nama    : {value[0]}\nNIM     : {value[1]}", style="text_success")),
+        Text("\nBerhasil ditambahkan!\n", justify="center", style="text_success")
     )
 
     deletion_success = Group(
-        Text("\nData mahasiswa dengan:\n", justify="center", style="bold"),
-        Align.center(Text(f"Nama    : {value[0]}\nNIM     : {value[1]}", style="bold")),
-        Text("\nBerhasil dihapus!\n", justify="center", style="bold")
+        Text("\nData mahasiswa dengan:\n", justify="center", style="text_success"),
+        Align.center(Text(f"Nama    : {value[0]}\nNIM     : {value[1]}", style="text_success")),
+        Text("\nBerhasil dihapus!\n", justify="center", style="text_success")
     )
 
     panel = Panel("None")
     match operation:
         case "addition":
-            panel = Panel(addition_success, title="[bold]INFO")
+            panel = Panel(addition_success, title="[title_success]INFO", style="success")
         case "deletion":
-            panel = Panel(deletion_success, title="[bold]INFO")
+            panel = Panel(deletion_success, title="[title_success]INFO", style="success")
 
     return panel
 
@@ -32,9 +32,9 @@ def panel_empty_data(operation: str) -> Panel:
     panel = Panel("None")
     match operation:
         case "deletion":
-            panel = Panel(Text("\nLinked List Kosong! Tidak ada data yang bisa dihapus!\n", justify="center", style="bold"), title="[bold]INFO")
+            panel = Panel(Text("\nLinked List Kosong! Tidak ada data yang bisa dihapus!\n", justify="center", style="text_warning"), title="[title_warning]INFO", style="warning")
         case "display_data":
-            panel = Panel(Text("\nLinked List Kosong! Tidak ada data yang bisa ditampilkan!\n", justify="center", style="bold"), title="[bold]INFO")
+            panel = Panel(Text("\nLinked List Kosong! Tidak ada data yang bisa ditampilkan!\n", justify="center", style="text_warning"), title="[title_warning]INFO", style="warning")
 
     return panel
 
@@ -44,19 +44,19 @@ def panel_not_found_data(data, case: str) -> Panel:
     panel = Panel("None")
     match case:
         case "nama":
-            panel = Panel(Padding(Text(f"Mahasiswa dengan nama [{data}] tidak ditemukan!", justify="center", style="bold"), pad=(1, 0, 1, 0)), title="[bold #9ee5ff]INFO") 
+            panel = Panel(Padding(Text(f"Mahasiswa dengan nama [{data}] tidak ditemukan!", justify="center", style="text_warning"), pad=(1, 0, 1, 0)), title="[title_warning]INFO", style="warning")
         case "nim":
-            panel = Panel(Padding(Text(f"Mahasiswa dengan NIM [{data}] tidak ditemukan!", justify="center", style="bold"), pad=(1, 0, 1, 0)), title="[bold #9ee5ff]INFO") 
+            panel = Panel(Padding(Text(f"Mahasiswa dengan NIM [{data}] tidak ditemukan!", justify="center", style="text_warning"), pad=(1, 0, 1, 0)), title="[title_warning]INFO", style="warning") 
 
     return panel
 
 def table_data(data: SLinkedList) -> Table:
     """Tabel untuk menampilkan data."""
 
-    table = Table(title="[bold]Data Mahasiswa")
-    table.add_column("No.", style="bold", justify="center")
-    table.add_column("NIM", style="bold", min_width=20)
-    table.add_column("Nama", style="bold", min_width=20)
+    table = Table(title="[text_title]Data Mahasiswa", style="default")
+    table.add_column("[text_title]No.", style="text_default", justify="center")
+    table.add_column("[text_title]NIM", style="text_default", min_width=20)
+    table.add_column("[text_title]Nama", style="text_default", min_width=20)
 
     data_mhs = data.traverse()
     for i in range(data.size):
@@ -68,10 +68,10 @@ def table_data(data: SLinkedList) -> Table:
 def search_data(data, linked_list: SLinkedList, based_on: str):
     """Fungsi untuk menampilkan data yang dicari."""
 
-    result_table = Table(title="[bold]Hasil Pencarian")
-    result_table.add_column("No.", style="bold", justify="center")
-    result_table.add_column("NIM", style="bold", min_width=20)
-    result_table.add_column("Nama", style="bold", min_width=20)
+    result_table = Table(title="[text_title]Hasil Pencarian", style="default")
+    result_table.add_column("[text_title]No.", style="text_default", justify="center")
+    result_table.add_column("[text_title]NIM", style="text_default", min_width=20)
+    result_table.add_column("[text_title]Nama", style="text_default", min_width=20)
 
     match based_on:
         case "nama":
@@ -99,10 +99,10 @@ def search_data(data, linked_list: SLinkedList, based_on: str):
 def delete_data(data, linked_list: SLinkedList, based_on: str):
     """Fungsi untuk menghapus data tertentu."""
 
-    result_table = Table(title="[bold]Penghapusan Data")
-    result_table.add_column("No.", style="bold", justify="center")
-    result_table.add_column("NIM", style="bold", min_width=20)
-    result_table.add_column("Nama", style="bold", min_width=20)
+    result_table = Table(title="[text_title]Penghapusan Data")
+    result_table.add_column("[text_title]No.", style="text_default", justify="center")
+    result_table.add_column("[text_title]NIM", style="text_default", min_width=20)
+    result_table.add_column("[text_title]Nama", style="text_default", min_width=20)
 
     match based_on:
         case "nama":
@@ -148,7 +148,7 @@ def main():
         5: "Keluar Program"
     }
     
-    menu_str = "\n[bold]"
+    menu_str = "\n[text_default]"
     for i, k in menu.items():
         menu_str += f"{i}. {k}\n"
 
@@ -157,7 +157,7 @@ def main():
         2: "Cari berdasarkan NIM"
     }
 
-    searching_options_str = "\n[bold]"
+    searching_options_str = "\n[text_default]"
     for i, k in searching_options.items():
         searching_options_str += f"{i}. {k}\n"
 
@@ -166,20 +166,20 @@ def main():
         2: "Hapus berdasarkan NIM"
     }
 
-    deletion_options_str = "\n[bold]"
+    deletion_options_str = "\n[text_default]"
     for i, k in deletion_options.items():
         deletion_options_str += f"{i}. {k}\n"
 
-    panel_menu = Panel(menu_str, title="[bold #9ee5ff]Menu Program", title_align="left")
-    panel_description = Panel(program4.description, title="[bold #9ee5ff]Deskripsi Program", title_align="left")
-    panel_searching_options = Panel(searching_options_str, title="[bold #9ee5ff]Opsi Pencarian Data", title_align="left")
-    panel_deletion_options = Panel(deletion_options_str, title="[bold #9ee5ff]Opsi Penghapusan Data", title_align="left")
+    panel_menu = Panel(menu_str, title="[text_title]Menu Program", title_align="left", style="default")
+    panel_description = Panel(program4.description, title="[text_title]Deskripsi Program", title_align="left", style="default")
+    panel_searching_options = Panel(searching_options_str, title="[text_title]Opsi Pencarian Data", title_align="left", style="default")
+    panel_deletion_options = Panel(deletion_options_str, title="[text_title]Opsi Penghapusan Data", title_align="left", style="default")
 
     linked_list = SLinkedList()
 
     while True:
         console.clear()
-        console.rule(program4.title, style="#9ee5ff")
+        console.rule(program4.title, style="default")
         console.print(Padding(panel_description, pad=(1, 0, 0, 0)))
         
         console.print(Padding(panel_menu, pad=(1, 0, 0, 0)))
@@ -190,7 +190,7 @@ def main():
         match opt:
             case 1: # case 1: Tambah data
                 print()
-                console.rule("[bold #9ee5ff]Prompt Penambahan Data", style="#9ee5ff")
+                console.rule("[text_title]Prompt Penambahan Data", style="default")
 
                 while True:
                     nama = Prompt.ask("[bold]\nMasukkan Nama Mahasiswa")
@@ -233,6 +233,11 @@ def main():
                 console.clear()
                 console.rule(program4.title)
                 
+                if linked_list.empty():
+                    console.print(Padding(panel_empty_data(operation="display_data"), pad=(1, 0, 0, 0)))
+                    getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
+                    continue
+
                 console.print(Padding(panel_searching_options, pad=(1, 0, 0, 0)))
 
                 opt = IntPrompt.ask("\n[bold]Pilih opsi pencarian data", choices=[str(i) for i in searching_options.keys()])
@@ -254,7 +259,12 @@ def main():
 
             case 4:
                 console.clear()
-                console.rule(program4.title)
+                console.rule(program4.title, style="default")
+
+                if linked_list.empty():
+                    console.print(Padding(panel_empty_data(operation="deletion"), pad=(1, 0, 0, 0)))
+                    getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
+                    continue
 
                 console.print(Padding(panel_deletion_options, pad=(1, 0, 0, 0)))
 
@@ -278,9 +288,9 @@ def main():
             case 5:
                 return program4.stop()
 
-title = "[bold #9ee5ff]Program 4: Implementasi Linked List4\n" # untuk di tampilkan sebagai judul
+title = "[text_title]Program 4: Implementasi Linked List4\n" # untuk di tampilkan sebagai judul
 name = "Implementasi Linked List" # untuk di tampilkan di list menu
-description = """[bold]
+description = """[text_default]
 🔷 Program 4 merupakan program implementasi struktur data linked list.
 🔷 Struktur data linked list pada program ini digunakan untuk menampung data nama dan NIM mahasiswa.
 🔷 Program ini memiliki fitur untuk menambahkan dan menampilkan data serta mencari dan menghapus data berdasarkan nama ataupun NIM.\n""" # deskripsi program

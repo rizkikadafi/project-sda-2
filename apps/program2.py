@@ -1,15 +1,15 @@
 from utils.app import *
 
 def main():
-    print("doing some task")
-
     if Confirm.ask("[bold]Keluar Program?"):
         return program2.stop()
 
-title = "[bold #9ee5ff]Program 2: Title Program 2\n" # untuk di tampilkan sebagai judul
-name = "Konversi Sistem Bilangan" # untuk di tampilkan di list menu
-description = """[bold]
-🔷.\n""" # deskripsi program
+title = "[text_title]Program 2: Title Program\n" # untuk di tampilkan sebagai judul
+name = "Nama Program" # untuk di tampilkan di list menu
+description = """[text_default]
+🔷 list 1. 
+🔷 list 2. 
+🔷 list 3.\n""" # deskripsi program
 
 program2 = App(name=name, title=title, description=description, program=main)
 
