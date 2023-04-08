@@ -99,7 +99,7 @@ def search_data(data, linked_list: SLinkedList, based_on: str):
 def delete_data(data, linked_list: SLinkedList, based_on: str):
     """Fungsi untuk menghapus data tertentu."""
 
-    result_table = Table(title="[text_title]Penghapusan Data")
+    result_table = Table(title="[text_title]Penghapusan Data", style="default")
     result_table.add_column("[text_title]No.", style="text_default", justify="center")
     result_table.add_column("[text_title]NIM", style="text_default", min_width=20)
     result_table.add_column("[text_title]Nama", style="text_default", min_width=20)
@@ -230,14 +230,14 @@ def main():
                 getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
 
             case 3: # case 3: Cari data
-                console.clear()
-                console.rule(program4.title)
-                
                 if linked_list.empty():
                     console.print(Padding(panel_empty_data(operation="display_data"), pad=(1, 0, 0, 0)))
                     getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
                     continue
 
+                console.clear()
+                console.rule(program4.title)
+                
                 console.print(Padding(panel_searching_options, pad=(1, 0, 0, 0)))
 
                 opt = IntPrompt.ask("\n[bold]Pilih opsi pencarian data", choices=[str(i) for i in searching_options.keys()])
@@ -258,13 +258,13 @@ def main():
                         getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
 
             case 4:
-                console.clear()
-                console.rule(program4.title, style="default")
-
                 if linked_list.empty():
                     console.print(Padding(panel_empty_data(operation="deletion"), pad=(1, 0, 0, 0)))
                     getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
                     continue
+
+                console.clear()
+                console.rule(program4.title, style="default")
 
                 console.print(Padding(panel_deletion_options, pad=(1, 0, 0, 0)))
 
