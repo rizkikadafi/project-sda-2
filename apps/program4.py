@@ -288,7 +288,7 @@ def main():
             case 5:
                 return program4.stop()
 
-title = "[text_title]Program 4: Implementasi Linked List4\n" # untuk di tampilkan sebagai judul
+title = "[text_title]Program 4: Implementasi Linked List" # untuk di tampilkan sebagai judul
 name = "Implementasi Linked List" # untuk di tampilkan di list menu
 description = """[text_default]
 🔷 Program 4 merupakan program implementasi struktur data linked list.
