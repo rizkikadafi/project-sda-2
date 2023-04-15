@@ -114,6 +114,11 @@ class SLinkedList():
 
         if firstNode is None:
             return None
+        elif firstNode.next is None:
+            self.head = None
+            self.tail = None
+            self.size -= 1
+            return firstNode.data
         else:
             self.head = firstNode.next
             self.size -= 1
