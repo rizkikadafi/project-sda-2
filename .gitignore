@@ -215,4 +215,8 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# pyright
+pyrightconfig.json
+pyrightconfig.toml
+
 # End of https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,python

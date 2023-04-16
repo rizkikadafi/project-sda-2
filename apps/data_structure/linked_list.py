@@ -13,9 +13,10 @@ class SLinkedList():
         self.size: int = 0
 
     def prepend(self, value):
+        """Method untuk insert data di awal linked list."""
         newNode = Node(value, next=self.head)
 
-        if self.head is None:
+        if self.head is None: # jika linked list kosong
             self.head = newNode
             self.tail = newNode
         else:
@@ -24,9 +25,10 @@ class SLinkedList():
         self.size += 1
 
     def append(self, value):
+        """Method untuk insert data di akhirt linked list."""
         newNode = Node(value, next=None)
 
-        if self.tail is None:
+        if self.tail is None: # jika linked list kosong
             self.tail = newNode
             self.head = newNode
         else:
@@ -36,24 +38,28 @@ class SLinkedList():
         self.size += 1
 
     def add_after(self, value, after):
+        """Method untuk insert data setelah data tertentu dalam linked list."""
         currentNode = self.head
-        newNode = Node(value, next=None)
+        newNode = Node(value)
         nextNode = None
 
         while currentNode is not None:
             if currentNode.data == after:
                 nextNode = currentNode.next
+
+                if nextNode is None: self.tail = newNode # dilakukan ketika insert setelah data terakhir
+
                 currentNode.next = newNode
                 newNode.next = nextNode
+                self.size += 1
                 return
 
             currentNode = currentNode.next
 
-        print(f"[{after}] tidak ada dalam linked list!")
-
-        self.size += 1
+        return -1
 
     def add_before(self, value, before):
+        """Method untuk insert data setelah data tertentu dalam linked list."""
         currentNode = self.head
         nextNode = None if currentNode is None else currentNode.next
         newNode = Node(value)
@@ -62,13 +68,21 @@ class SLinkedList():
             if nextNode is not None and nextNode.data == before:
                 currentNode.next = newNode
                 newNode.next = nextNode
+                self.size += 1
+                return
+            elif currentNode.data == before: # dilakukan ketika insert sebelum data pertama
+                newNode.next = self.head
+                self.head = newNode
+                self.size += 1
                 return
 
-        print(f"[{before}] tidak ada dalam linked list!")
+            currentNode = currentNode.next
+            nextNode = currentNode.next
 
-        self.size += 1
+        return -1
 
     def display(self):
+        """Method untuk memperlihatkan data pada linked list secara visual."""
         currentNode = self.head
         string_result = ""
 
@@ -82,6 +96,7 @@ class SLinkedList():
             print(string_result + "None")
 
     def traverse(self):
+        """Method untuk menelusuri data pada linked list."""
         currentNode = self.head
 
         if currentNode == None:
@@ -93,6 +108,7 @@ class SLinkedList():
 
 
     def contain(self, value):
+        """Method untuk memeriksa apakah suatu data ada dalam linked list."""
         currentNode = self.head
         
         while currentNode is not None:
@@ -104,17 +120,20 @@ class SLinkedList():
         return False
 
     def getFirst(self):
+        """Method untuk mendapatkan data pertama dalam linked list."""
         return None if self.head is None else self.head.data
 
     def getLast(self):
+        """Method untuk mendapatkan data terakhir dalam linked list."""
         return None if self.tail is None else self.tail.data
 
     def popLeft(self):
+        """Method untuk menghapus data pertama dalam linked list dan mengembalikannya."""
         firstNode = self.head
 
-        if firstNode is None:
+        if firstNode is None: # ketika linked list kosong
             return None
-        elif firstNode.next is None:
+        elif firstNode.next is None: # ketika hanya ada satu data pada linked list
             self.head = None
             self.tail = None
             self.size -= 1
@@ -126,12 +145,13 @@ class SLinkedList():
 
 
     def pop(self):
+        """Method untuk menghapus data terakhir dalam linked list dan mengembalikannya."""
         currentNode = self.head
         nextNode = None if currentNode is None else currentNode.next
 
-        if currentNode is None:
+        if currentNode is None: # ketika linked list kosong
             return None
-        elif currentNode.next is None:
+        elif currentNode.next is None: # ketika hanya ada satu data pada linked list
             self.head = None
             self.tail = None
             self.size -= 1
@@ -145,21 +165,22 @@ class SLinkedList():
                     return nextNode.data
 
                 currentNode = currentNode.next
-                nextNode = None if currentNode is None else currentNode.next
+                nextNode = currentNode.next
 
     def remove(self, value):
+        """Method untuk menghapus data dalam linked list berdasarkan nama datanya."""
         currentNode = self.head
         nextNode = None if currentNode is None else currentNode.next
 
-        if currentNode is None:
-            print("Linked list kosong!")
-        elif currentNode.next is None:
+        if currentNode is None: # ketika linked list kosong
+            return -1
+        elif currentNode.next is None: # ketika hanya ada satu data pada linked list
             if currentNode.data == value:
                 self.head = None
                 self.tail = None
                 self.size -= 1
             else:
-                print(f"[{value}] tidak ada dalam linked list!")
+                return -1
         else:
             while currentNode is not None:
                 if currentNode.data == value:
@@ -174,7 +195,8 @@ class SLinkedList():
                 currentNode = currentNode.next
                 nextNode = None if currentNode is None else currentNode.next
 
-            print(f"[{value}] tidak ada dalam linked list!")
+            return -1
 
     def empty(self):
+        """Method ini akan mengembalikan True jika linked list kosong."""
         return True if self.head is None else False
