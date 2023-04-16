@@ -65,14 +65,14 @@ class SLinkedList():
         newNode = Node(value)
 
         while currentNode is not None:
-            if nextNode is not None and nextNode.data == before:
-                currentNode.next = newNode
-                newNode.next = nextNode
-                self.size += 1
-                return
-            elif currentNode.data == before: # dilakukan ketika insert sebelum data pertama
+            if currentNode.data == before: # dilakukan ketika insert sebelum data pertama
                 newNode.next = self.head
                 self.head = newNode
+                self.size += 1
+                return
+            elif nextNode is not None and nextNode.data == before:
+                currentNode.next = newNode
+                newNode.next = nextNode
                 self.size += 1
                 return
 
@@ -189,6 +189,9 @@ class SLinkedList():
                     return
                 elif nextNode is not None and nextNode.data == value:
                     currentNode.next = nextNode.next
+
+                    if nextNode.next is None: self.tail = currentNode # jika yang dihapus data terakhir
+
                     self.size -= 1
                     return
 
