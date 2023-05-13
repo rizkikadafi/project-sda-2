@@ -189,7 +189,7 @@ def main():
         import getpass
         match opt:
             case 1: # case 1: Tambah data
-                print()
+                console.clear()
                 console.rule("[text_title]Prompt Penambahan Data", style="default")
 
                 while True:
@@ -225,7 +225,9 @@ def main():
                 if linked_list.empty():
                     console.print(Padding(panel_empty_data(operation="display_data"), pad=(1, 0, 0, 0)))
                 else:
-                    console.print(table_data(linked_list), justify="center")
+                    console.clear()
+                    console.rule("[text_title]Tabel Data Mahasiswa", style="default")
+                    console.print(Padding(table_data(linked_list), pad=(1, 0, 0, 0)), justify="center")
 
                 getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
 
