@@ -32,3 +32,31 @@ class Queue():
 
     def getLast(self):
         return self._queue[-1]
+
+class DQueue():
+    def __init__(self) -> None:
+        self._queue = []
+
+    def enqueue(self, value):
+            self._queue.append(value)
+
+    def dequeue(self):
+        return self._queue.pop(0)
+
+    def ldequeue(self):
+        return self._queue.pop()
+
+    def remove(self, value):
+        self._queue.remove(value)
+
+    def size(self):
+        return len(self._queue)
+
+    def empty(self):
+        return self.size() == 0
+
+    def getFirst(self):
+        return self._queue[0]
+
+    def getLast(self):
+        return self._queue[-1]
