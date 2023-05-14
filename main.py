@@ -2,7 +2,7 @@ import sys
 sys.path.append("apps")
 
 from apps.utils.load import Load
-from apps import program1, program2, program3, program4
+from apps import program1, program2, program3, program4, program5
 
 title = "[text_title]Project SDA 2[/]"
 description = """[text_default]
@@ -10,7 +10,7 @@ description = """[text_default]
 """
 
 programs = Load(title=title, description=description)
-programs.add([program1, program2, program3, program4])
+programs.add([program1, program2, program3, program4, program5])
 
 if __name__ == "__main__":
     programs.run()
