@@ -57,8 +57,9 @@ def main():
     menu = {
         1: "Tambah data dalam antrian",
         2: "Hapus antrian terdepan",
-        3: "Lihat isi antrian",
-        4: "Keluar program"
+        3: "Hapus antrian dari tengah atau belakang",
+        4: "Lihat isi antrian",
+        5: "Keluar program"
     }
 
     menu_str = "\n[text_default]"
@@ -114,12 +115,19 @@ def main():
                 getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
             case 3:
                 if obj.empty():
+                    console.print("[prompt.invalid]Tidak ada data yang bisa dihapus!")
+                else:
+                    console.print("[prompt.invalid]Data antrian tidak bisa dihapus dari tengah ataupun belakang!")
+
+                getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
+            case 4:
+                if obj.empty():
                     console.print(empty_data_panel(operation="display_data"))
                 else:
                     console.print(table_data(obj, opt="all_data"), justify="center")
 
                 getpass.getpass("\nKlik 'Enter' untuk melanjutkan")
-            case 4:
+            case 5:
                 return program1.stop()
 
 title = "[text_title]Program 1: Implementasi Queue\n" # untuk di tampilkan sebagai judul
